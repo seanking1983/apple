@@ -1,0 +1,15 @@
+.bundle
+db/*.sqlite3
+log/*.log
+*.log
+tmp/
+*.swp
+*~
+.project
+.DS_Store
+.idea/
+.sass-cache/
+.yardoc/
+public/assets/
+coverage/
+doc/
