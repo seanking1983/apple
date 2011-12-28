@@ -4,6 +4,6 @@ class AddPasswordToUsers < ActiveRecord::Migration
   end
   
   def down
-    remvoe_column :users, :encrypted_password
+    remove_column :users, :encrypted_password
   end
 end

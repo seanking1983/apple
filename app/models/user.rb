@@ -14,6 +14,27 @@ class User < ActiveRecord::Base
                         :confirmation => true,
                         :length       => { :within => 6..40 }                        
   
+
+  before_save :encrypt_password
+
+
+
+  private
+  
+    def encrypt_password
+      self.salt = make_salt if new_record?
+      self.encrypted_password = encrypt(password)
+    end
+  
+    def encrypt(string)
+      Digest::SHA2.hexdigest("#{salt}--#{string}")
+    end
+    
+    def make_salt
+      Digest::SHA2.hexdigest("#{Time.now.utc}--#{password}")
+    end
+    
+      
 end
 # == Schema Information
 #
