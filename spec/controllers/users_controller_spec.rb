@@ -16,6 +16,7 @@ describe UsersController do
   end
   
   
+  # show template
   describe "get show" do
     before(:each) do
       @user = Factory(:user)
@@ -31,6 +32,7 @@ describe UsersController do
       assigns(:user).should == @user
     end
     
+    # title, name and image
    it "should have the right title" do
       get :show, :id => @user
       response.should have_selector('title', :content => @user.name)
@@ -46,6 +48,13 @@ describe UsersController do
       response.should have_selector('h1>img', :class => 'gravatar')
     end
     
+    # url 
+    
+    it "should have the right URL" do
+      get :show, :id => @user
+      response.should have_selector('td>a', :content => user_path(@user),
+                                            :href    => user_path(@user))
+    end
 
   
   end
