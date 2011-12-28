@@ -84,5 +84,24 @@ describe UsersController do
         end.should_not change(User, :count)
       end
     end
+    
+    describe "success" do
+      before(:each) do
+        @attr = { :name => "Xun Xu", :email => "xunx@hawaii.edu", 
+                  :password => "foobar", :password => "foobar"}
+      end
+      
+      it "should create the user" do
+        lambda do
+          post :create, :user => @attr
+        end.should change(User, :count).by(1)
+      end
+      
+      it "should redirect to the user show page" do
+        post :create, :user => @attr
+        response.should redirect_to(user_path(assigns(:user)))
+      end
+      
+    end
 
 end
