@@ -13,7 +13,8 @@ class UsersController < ApplicationController
     #raise params[:user].inspect
     @user = User.new(params[:user])
     if @user.save
-#
+      flash[:success] = "Welcome to the Sample App!"
+      redirect_to @user
     else
       @title = "Sign Up"
       render 'new'
