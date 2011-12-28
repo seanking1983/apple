@@ -92,6 +92,19 @@ describe User do
     hash = @attr.merge(:password => long, :password_confirmation => long)
     User.new(hash).should_not be_valid
   end
+  
+  
+  describe "password encryption" do
+    
+    before(:each) do
+      @user = User.create!(@attr)
+    end
+    
+    it "should have an encrypted password attribute" do
+      @user.should respond_to(:encrypted_password)
+    end
+    
+  end
 
 
 end
@@ -99,10 +112,11 @@ end
 #
 # Table name: users
 #
-#  id         :integer         not null, primary key
-#  name       :string(255)
-#  email      :string(255)
-#  created_at :datetime
-#  updated_at :datetime
+#  id                 :integer         not null, primary key
+#  name               :string(255)
+#  email              :string(255)
+#  created_at         :datetime
+#  updated_at         :datetime
+#  encrypted_password :string(255)
 #
 
