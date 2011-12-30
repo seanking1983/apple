@@ -192,4 +192,26 @@ describe UsersController do
         end
 
       end
+      
+      # before filter for non-signed-in users to update **************************************************before filter for non-signed-in users to update
+      
+        describe "authentication of edit action" do
+          before(:each) do
+            @user = Factory(:user)
+          end
+
+
+          # non-signed-in users cannot edit
+
+          it "should deny edit if not signed in" do
+            put :update, :id => @user
+            response.should redirect_to(signin_path)
+            flash[:notice].should =~ /sign in/i
+          end
+
+          it "should deny update if not signed in" do
+            put :update, :id => @user, :user => {}
+            response.should redirect_to(signin_path)
+          end
+        end
 end
