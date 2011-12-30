@@ -140,7 +140,7 @@ describe UsersController do
     end
 
 
-    # update action **************************************************************************************************update
+    # update action **************************************************************************************************update action
     
      describe "put update" do
         before(:each) do
@@ -193,9 +193,9 @@ describe UsersController do
 
       end
       
-      # before filter for non-signed-in users to update **************************************************before filter for non-signed-in users to update
+      # before filter ****************************************************************************************before filter
       
-        describe "authentication of edit action" do
+     describe "authentication of edit action" do
           before(:each) do
             @user = Factory(:user)
           end
@@ -234,4 +234,39 @@ describe UsersController do
                 end
             end
         end
+        
+   # index action **************************************************************************************************index action
+   
+   it "should deny access to non-signed-in users" do
+     get :index
+     response.should redirect_to(signin_path)
+     flash[:notice].should =~ /sign in/i
+   end
+   
+   describe "for signed-in users" do
+     before(:each) do
+       @user = Factory(:user)
+       test_sign_in(@user)
+       second = Factory(:user, :email => "xunx@example.com")
+       third = Factory(:user, :email => "xunx@example.net")
+       @users = [@user, second, third]
+     end
+     
+     it "should redirect to the index page for signed_in users" do
+       get :index
+       response.should be_success
+     end
+
+     it "should have the right title" do
+       get :index
+       response.should have_selector('title', :content => "All Users")
+     end
+     
+     it "should show each user on index page" do
+       get :index
+       @users.each do |user|
+         response.should have_selector('li', :content => user.name)
+       end
+     end
+   end
 end
