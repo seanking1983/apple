@@ -138,4 +138,58 @@ describe UsersController do
                                            :content => "change")
       end  
     end
+
+
+    # update action **************************************************************************************************update
+    
+     describe "put update" do
+        before(:each) do
+          @user = Factory(:user)
+          test_sign_in(@user)
+        end
+
+        describe "update failure" do
+          before(:each) do
+            @attr = { :name => "", :email => "", :password => "", :password_confirmation => ""}
+          end
+
+          it "should render the edit page upon failure" do
+            put :update, :id => @user, :user => @attr
+            response.should render_template('edit')
+          end
+
+          it "should have the right title" do
+            put :update, :id => @user, :user => @attr
+            response.should have_selector('title', :content => "Edit")
+          end
+        end
+
+        describe "update success" do
+          before(:each) do
+            @attr = { :name => "Sean King", :email=> "example@user.com",
+                      :password => "secret", :password_confirmation => "secret" }
+          end
+
+          it "should change the user's attributes upon success" do
+            put :update, :id => @user, :user => @attr
+            #user = assigns(:user)
+            @user.reload
+            @user.name.should == @attr[:name] #user.name
+            @user.email.should == @attr[:email] #user.email
+            #@user.encrypted_password.should == user.encrypted_password
+          end
+
+          it "should redirect to the user profile page" do
+            put :update, :id => @user, :user => @attr
+            response.should redirect_to(user_path(@user))
+          end
+
+          it "should have the flash message" do
+            put :update, :id => @user, :user => @attr
+            flash[:success].should =~ /update success/i
+          end
+
+        end
+
+      end
 end
