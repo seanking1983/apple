@@ -4,7 +4,7 @@ describe UsersController do
   render_views
   
   
-  # new action
+  # new action ******************************************************************************************************new
   describe "get new" do
     it "should be successful" do
       get :new
@@ -18,7 +18,7 @@ describe UsersController do
   end
   
   
-  # show action
+  # show action ****************************************************************************************************show
   describe "get show" do
     before(:each) do
       @user = Factory(:user)
@@ -61,7 +61,8 @@ describe UsersController do
   
   end
   
-  # create action
+  # create action ***************************************************************************************************create
+  
     describe "failure" do
      
       before(:each) do
@@ -112,5 +113,29 @@ describe UsersController do
         controller.should be_signed_in
       end
     end
-
+    
+    # edit action ****************************************************************************************************edit
+    
+    describe "get edit" do
+      before(:each) do
+        @user = Factory(:user)
+        test_sign_in(@user)
+      end
+      
+      it "should be successful" do
+        get :edit, :id => @user
+        response.should be_success
+      end
+      
+      it "should have the right title" do
+        get :edit, :id => @user
+        response.should have_selector('title', :content => "Edit")
+      end
+      
+      it "should have a link to change the gravatar" do
+        get :edit, :id => @user
+        response.should have_selector('a', :href => 'http://gravatar.com/emails',
+                                           :content => "change")
+      end  
+    end
 end
